@@ -1,0 +1,72 @@
+entity City{
+	name String
+}
+
+entity UserEvent{
+	date ZonedDateTime
+}
+
+entity UserExt{
+	name String,
+    dislikes Integer,
+    likes Integer,
+    imgProfile ImageBlob,
+    description String
+}
+
+entity EventRating{
+	
+    text String,
+    rating Integer,
+    date ZonedDateTime
+}
+
+entity UserEventRating{
+	text String,
+    rating Integer,
+    date ZonedDateTime
+}
+
+enum Status{
+	NOTSTARTED, FULL, INPROGRESS, DONE
+}
+
+entity Event{
+
+	name String,
+    status Status,
+	activity String,
+    address String,
+    latitude Double,
+    longitude Double,
+    date ZonedDateTime,
+    estimatedPrice Double,
+    photo ImageBlob
+}
+
+entity EventCategory{
+	name String,
+    creationDate ZonedDateTime
+}
+
+relationship ManyToOne {
+    UserEvent{user} to User,
+    UserEvent{event} to Event{userEvent},
+    UserExt{city} to City{userExt},
+    Event{city} to City{event},
+    EventCategory{subEventCategory(name)} to EventCategory{superEventCategory(name)},
+    Event{category(name)} to EventCategory{event(name)},
+    UserEventRating{userEvent} to UserEvent{userEventRating},
+    UserEventRating{user} to User
+    
+}
+
+relationship OneToOne{
+	UserExt{user(login)} to User,
+    EventRating{userEvent} to UserEvent{eventRating}
+}
+
+
+
+
+
